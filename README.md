@@ -101,3 +101,44 @@ thiago@thiago-pc:~/labs/filtrando_conteudo$ grep -rl HTTP *
 services
 teste/services2
 ```
+
+# Formatando a saída da tela
+## O comando `cat`
+O comando `cat` exibe o conteúdo resultante da concatenação dos arquivos informados:
+``` 
+thiago@thiago-pc:~/labs/filtrando_conteudo$ echo Conteudo1 > arq1
+thiago@thiago-pc:~/labs/filtrando_conteudo$ echo Conteudo2 > arq2
+thiago@thiago-pc:~/labs/filtrando_conteudo$ echo Conteudo3 > arq3
+thiago@thiago-pc:~/labs/filtrando_conteudo$ cat arq1 arq2 arq3
+Conteudo1
+Conteudo2
+Conteudo3
+``` 
+
+## O comando `more`
+O comando `more` permite exibir de forma paginada o conteúdo de um arquivo grande.
+
+Dentro do `more` podemos rolar a tela para baixo com as teclas `espaço` ou `Page Down`, ou rolar para cima com a tecla `n` ou `Page Up`.
+
+Para sair do comando, tecle `q` ou vá até o fim do arquivo visualizado.
+
+## O comando `less`
+O comando `less` faz a mesma coisa que o `more`. A diferença é que as setas para baixo e para cima no `more` navega por uma página inteira, enquanto no `less` navega linha a linha. 
+
+O `less` costuma ser melhor que o `more` para ler conteúdo.
+
+## Os comandos `head` e `tail`
+Esses comandos exibem o início e o fim do arquivo, respectivamente. Por padrão, cada comando exibe 10 linhas do arquivo.
+
+Informando o parâmetro `-n` podemos mudar o número de linhas exibidas pelos comandos `head` e `tail`:
+```
+thiago@thiago-pc:~/labs/filtrando_conteudo$ head -n 3 passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+
+thiago@thiago-pc:~/labs/filtrando_conteudo$ tail -n 3 passwd
+usbmux:x:113:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+thiago:x:1000:1000:Thiago:/home/thiago:/bin/bash
+lxd:x:999:100::/var/snap/lxd/common/lxd:/bin/false
+```
