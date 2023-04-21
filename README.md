@@ -142,3 +142,44 @@ usbmux:x:113:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
 thiago:x:1000:1000:Thiago:/home/thiago:/bin/bash
 lxd:x:999:100::/var/snap/lxd/common/lxd:/bin/false
 ```
+
+# Procurando arquivos no sistema
+Para procurar arquivos pelo nome, use o comando `find <path_de_origem> -name <nome_procurado>`:
+```
+thiago@thiago-pc:/$ find / -name *.conf
+```
+Às vezes é necessário usar o `sudo` para buscar o conteúdo de certos diretórios que tem acesso restrito:
+```
+thiago@thiago-pc:/$ sudo find / -name *.conf
+```
+
+O parâmetro `-maxdepth <n>` limita o nível de profundidade para buscar arquivos recursivamente com o `find`. Quanto maior o `maxdepth`, maior o número de resultados porque entra mais profundamente nos subdiretórios:
+```
+thiago@thiago-pc:/$ find /etc -maxdepth 1 -name *.conf
+/etc/ca-certificates.conf
+/etc/ld.so.conf
+/etc/sudo_logsrvd.conf
+/etc/usb_modeswitch.conf
+/etc/host.conf
+/etc/nsswitch.conf
+/etc/adduser.conf
+/etc/fuse.conf
+/etc/sudo.conf
+/etc/debconf.conf
+/etc/nftables.conf
+/etc/logrotate.conf
+/etc/overlayroot.conf
+/etc/multipath.conf
+/etc/gai.conf
+/etc/hdparm.conf
+/etc/e2scrub.conf
+/etc/deluser.conf
+/etc/resolv.conf
+/etc/pam.conf
+/etc/libaudit.conf
+/etc/mke2fs.conf
+/etc/xattr.conf
+/etc/sysctl.conf
+/etc/rsyslog.conf
+/etc/ucf.conf
+```
