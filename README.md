@@ -58,3 +58,46 @@ O parâmetro `-L` (maiúsculo) no `grep` retorna apenas o nome do arquivo que `N
 thiago@thiago-pc:~/labs/filtrando_conteudo$ grep -L thiago *
 services
 ```
+
+# Utilizando a recursividade no Grep
+Copiando o arquivo `services` para a pasta `teste` com o nome `services2`:
+```
+thiago@thiago-pc:~/labs/filtrando_conteudo$ mkdir teste
+thiago@thiago-pc:~/labs/filtrando_conteudo$ cp -p services teste/services2
+thiago@thiago-pc:~/labs/filtrando_conteudo$ ls teste
+services2
+```
+Pesquisando por `HTTP` no arquivo `services`:
+```
+thiago@thiago-pc:~/labs/filtrando_conteudo$ grep HTTP services
+http            80/tcp          www             # WorldWideWeb HTTP
+https           443/udp                         # HTTP/3
+hkp             11371/tcp                       # OpenPGP HTTP Keyserver
+```
+
+Pesquisando por `HTTP` em todos os arquivos (note que o conteúdo da subpasta `teste` não é pesquisado):
+```
+thiago@thiago-pc:~/labs/filtrando_conteudo$ grep HTTP *
+services:http           80/tcp          www             # WorldWideWeb HTTP
+services:https          443/udp                         # HTTP/3
+services:hkp            11371/tcp                       # OpenPGP HTTP Keyserver
+grep: teste: Is a directory
+```
+
+Pesquisando por `HTTP` `recursivamente` em todos os arquivos (note que o nome do arquivo que contém o resultado da pesquisa aparece no início de cada linha do resultado):
+```
+thiago@thiago-pc:~/labs/filtrando_conteudo$ grep -r HTTP *
+services:http           80/tcp          www             # WorldWideWeb HTTP
+services:https          443/udp                         # HTTP/3
+services:hkp            11371/tcp                       # OpenPGP HTTP Keyserver
+teste/services2:http            80/tcp          www             # WorldWideWeb HTTP
+teste/services2:https           443/udp                         # HTTP/3
+teste/services2:hkp             11371/tcp                       # OpenPGP HTTP Keyserver
+```
+
+Exibindo os nomes dos arquivos (`-l`) que contenham o texto `HTTP` e usando a recursividade (`-r`):
+```
+thiago@thiago-pc:~/labs/filtrando_conteudo$ grep -rl HTTP *
+services
+teste/services2
+```
