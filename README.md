@@ -428,3 +428,64 @@ thiago@thiago-pc:~/labs/redirecionamento$ tail /etc/passwd | grep thiago > lista
 thiago@thiago-pc:~/labs/redirecionamento$ cat listagem_usuarios.txt
 thiago:x:1000:1000:Thiago:/home/thiago:/bin/bash
 ```
+
+# Combinando comando com o pipe
+O comando `sort` ordena o conteúdo de uma determinada entrada/arquivos:
+```
+thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt
+ssh             22/tcp                          # SSH Remote Login Protocol
+ms-wbt-server   3389/tcp
+
+thiago@thiago-pc:~/labs/redirecionamento$ sort listagem.txt
+ms-wbt-server   3389/tcp
+ssh             22/tcp                          # SSH Remote Login Protocol
+
+thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt | sort
+ms-wbt-server   3389/tcp
+ssh             22/tcp                          # SSH Remote Login Protocol
+```
+
+> O comando a seguir falha quando usamos o mesmo arquivo como entrada e saída (perceba o arquivo vazio como resultado):
+> ```
+> thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt | sort > listagem.txt
+> thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt
+> thiago@thiago-pc:~/labs/redirecionamento$
+> ```
+> Para evitar isso, evite que o arquivos de entrada e saída sejam os mesmos:
+> ```
+> thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt | sort > listagem_ordenada.txt
+>
+> thiago@thiago-pc:~/labs/redirecionamento$ cat listagem_ordenada.txt
+> ms-wbt-server   3389/tcp
+> ssh             22/tcp                          # SSH Remote Login Protocol
+>
+> thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt
+> ssh             22/tcp                          # SSH Remote Login Protocol
+> ms-wbt-server   3389/tcp
+> ```
+
+## Exemplo com o arquivo `/var/log/syslog`
+Obtendo os 5 últimos registros do arquivo:
+```
+thiago@thiago-pc:~/labs/redirecionamento$ tail -n 5 /var/log/syslog
+Apr 22 14:39:37 thiago-pc systemd[1]: systemd-tmpfiles-clean.service: Deactivated successfully.
+Apr 22 14:39:37 thiago-pc systemd[1]: Finished Cleanup of Temporary Directories.
+Apr 22 15:03:36 thiago-pc systemd[1]: Starting Ubuntu Advantage Timer for running repeated jobs...
+Apr 22 15:03:37 thiago-pc systemd[1]: ua-timer.service: Deactivated successfully.
+Apr 22 15:03:37 thiago-pc systemd[1]: Finished Ubuntu Advantage Timer for running repeated jobs.
+```
+
+Filtrando apenas os logs com o texto `finished`:
+```
+thiago@thiago-pc:~/labs/redirecionamento$ tail -n 5 /var/log/syslog | grep -i finished
+Apr 22 14:39:37 thiago-pc systemd[1]: Finished Cleanup of Temporary Directories.
+Apr 22 15:03:37 thiago-pc systemd[1]: Finished Ubuntu Advantage Timer for running repeated jobs.
+```
+
+Jogando o resultado para o arquivo `log_finished.txt`:
+```
+thiago@thiago-pc:~/labs/redirecionamento$ tail -n 5 /var/log/syslog | grep -i finished > log_finished.txt
+thiago@thiago-pc:~/labs/redirecionamento$ cat log_finished.txt
+Apr 22 14:39:37 thiago-pc systemd[1]: Finished Cleanup of Temporary Directories.
+Apr 22 15:03:37 thiago-pc systemd[1]: Finished Ubuntu Advantage Timer for running repeated jobs.
+```
