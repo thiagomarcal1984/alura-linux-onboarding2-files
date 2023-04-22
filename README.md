@@ -586,3 +586,48 @@ Apr 21 18:42:31 thiago-pc systemd[1]: Created slice Slice /system/lvm2-pvscan.
 Apr 21 18:42:31 thiago-pc systemd[1]: Starting LVM event activation on device 8:3...
 Apr 21 18:42:31 thiago-pc systemd-udevd[448]: sr0: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/sr0' failed with exit code 1.
 ```
+# Regex com o Grep #1
+Instale o pacote wamerican no Ubuntu (esse pacote contém um dicionário de palavras em inglês):
+```
+sudo apt install wamerican
+```
+
+Depois, tente localizar todos os arquivos no diretório `/usr` que contenham `american`:
+```
+thiago@thiago-pc:~$ sudo find /usr/ -name *american*
+/usr/share/man/man5/american-english.5.gz
+/usr/share/doc/wamerican
+/usr/share/doc/wamerican/wamerican.scowl-word-lists-used
+/usr/share/dict/american-english
+```
+
+Copie o arquivo `american-english` para o diretório `expressoes_regulares`:
+```
+thiago@thiago-pc:~/labs$ mkdir expressoes_regulares
+thiago@thiago-pc:~/labs$ cd expressoes_regulares/
+
+thiago@thiago-pc:~/labs/expressoes_regulares$ cp /usr/share/dict/american-english .
+
+thiago@thiago-pc:~/labs/expressoes_regulares$ ls
+american-english
+```
+
+Visualizando o número de linhas do arquivo `american-english` com `wc -l`:
+```
+wc american-english -l
+```
+
+Ou:
+```
+cat american-english | wc -l
+```
+
+Acrescentando o parâmetro `-E` (maiúsculo) ao comando `grep` podemos fazer pesquisas utilizando expressões regulares.
+
+Exemplo: pesquisando palavras com o sufixo `computers` (excluindo a palavra `computers`):
+```
+thiago@thiago-pc:~/labs/expressoes_regulares$ grep -E ".+computers" american-english
+microcomputers
+minicomputers
+supercomputers
+```
