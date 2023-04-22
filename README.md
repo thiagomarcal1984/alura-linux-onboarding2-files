@@ -662,3 +662,26 @@ Uma versão alternativa do comando anterior:
 ```
 egrep -i "^(smartphones|computers)$" american-english
 ```
+# Regex com o Grep #3
+Buscando palavras que comecem com `f, l, m ou r` seguidos de `oot` e mais dois caracteres:
+```
+thiago@thiago-pc:~/labs/expressoes_regulares$ egrep "^[flmr]oot..$" american-english
+footed
+foot's
+looted
+looter
+loot's
+mooted
+rooted
+rooter
+root's
+```
+
+Buscando palavras que comecem com o range `l, m ou n` seguidos de `oot` e mais dois caracteres:
+```
+thiago@thiago-pc:~/labs/expressoes_regulares$ egrep "^[l-n]oot..$" american-english
+looted
+looter
+loot's
+mooted
+```
