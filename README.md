@@ -631,3 +631,34 @@ microcomputers
 minicomputers
 supercomputers
 ```
+
+# Regex com o Grep #2
+
+Busca case-insensitive (`-i`) com expressões regulares (`-E`):
+```
+thiago@thiago-pc:~/labs/expressoes_regulares$ grep -iE "^computer$" american-english
+computer
+Computer
+COMPUTER
+```
+
+## O comando `egrep`
+O comando `egrep` é o mesmo que o comando `grep -E`: ele pega uma expressão regular e faz sua busca num arquivo:
+```
+thiago@thiago-pc:~/labs/expressoes_regulares$ egrep -i "^computer$" american-english
+computer
+Computer
+COMPUTER
+```
+
+Pesquisando por `smartphones` ou `computers` usando `egrep`:
+```
+thiago@thiago-pc:~/labs/expressoes_regulares$ egrep -i "^smartphones$|^computers$" american-english
+computers
+smartphones
+```
+
+Uma versão alternativa do comando anterior:
+```
+egrep -i "^(smartphones|computers)$" american-english
+```
