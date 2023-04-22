@@ -489,3 +489,100 @@ thiago@thiago-pc:~/labs/redirecionamento$ cat log_finished.txt
 Apr 22 14:39:37 thiago-pc systemd[1]: Finished Cleanup of Temporary Directories.
 Apr 22 15:03:37 thiago-pc systemd[1]: Finished Ubuntu Advantage Timer for running repeated jobs.
 ```
+# Filtrando as informações com o cut
+O comando `wc` conta linhas, palavras e caracteres (no exemplo, 1004 linhas, 11652 palavras e 94253 caracteres):
+```
+thiago@thiago-pc:/var/log$ thiago@thiago-pc:/var/log$ cat syslog | grep systemd | wc
+grep: (standard input): binary file matches
+   1004   11652   94253
+```
+
+Visualize pausadamente os resultados usando o pipe seguido de `less`:
+```
+thiago@thiago-pc:/var/log$ cat syslog | grep systemd | less
+```
+
+## Usando o comando `cut`
+O comando `cut` corta as linhas de um arquivo a partir de um delimitador (parâmetro `-d`) e permite a seleção de um ou mais campos (parâmetro `-f`)
+
+Criando o arquivo de log para o comando `cut`:
+```
+thiago@thiago-pc:/var/log$ cat syslog | grep systemd > ~/labs/extraindo_conteudos/logs
+grep: (standard input): binary file matches
+thiago@thiago-pc:/var/log$ cd ~/labs/extraindo_conteudos/
+```
+
+Obtendo o conteúdo da primeira coluna (`-f1`)do resultado do `cut` usando o espaço como delimitador (`-d " "`):
+```
+thiago@thiago-pc:~/labs/extraindo_conteudos$ tail -n 5 logs | cut -d " " -f1
+Apr
+Apr
+Apr
+Apr
+Apr
+Apr
+Apr
+Apr
+Apr
+Apr
+```
+
+Obtendo a data dos 5 últimos logs com o comando `cut`, selecionando a primeira e a segunda colunas (`-f1,2`):
+```
+thiago@thiago-pc:~/labs/extraindo_conteudos$ tail -n 5 logs | cut -d " " -f1,2
+Apr 21
+Apr 21
+Apr 21
+Apr 21
+Apr 21
+```
+
+Obtendo a data e a hora dos 5 últimos logs com o comando `cut`, selecionando as 3 primeiras colunas (repare que o parâmetro `-f` utiliza um range `1-3`, `-f1-3`):
+```
+thiago@thiago-pc:~/labs/extraindo_conteudos$ tail -n 5 logs | cut -d " " -f1-3
+Apr 21 18:42:31
+Apr 21 18:42:31
+Apr 21 18:42:31
+Apr 21 18:42:31
+Apr 21 18:42:31
+```
+
+O mesmo resultado é obtido quando omitimos número 1 no parâmetro `-f-3`, ou seja, filtra do início até a terceira coluna):
+```
+thiago@thiago-pc:~/labs/extraindo_conteudos$ tail -n 5 logs | cut -d " " -f-3
+Apr 21 18:42:31
+Apr 21 18:42:31
+Apr 21 18:42:31
+Apr 21 18:42:31
+Apr 21 18:42:31
+```
+
+Obtendo os 5 últimos logs separados por espaço a partir da sexta coluna em diante (repare no parâmetro `-f6-`, ou seja, filtra da sexta coluna até a última; repare também que o delimitador espaço continua aparecendo nas colunas):
+```
+thiago@thiago-pc:~/labs/extraindo_conteudos$ tail -n 5 logs | cut -d " " -f6-
+dm-0: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/dm-0' failed with exit code 1.
+sda3: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/sda3' failed with exit code 1.
+Created slice Slice /system/lvm2-pvscan.
+Starting LVM event activation on device 8:3...
+sr0: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/sr0' failed with exit code 1.
+```
+
+Excluindo as colunas 4 e 5 do resultado usando `cut` (repare no parâmetro `-f1-3,6-`, ou seja, filtra as 3 primeiras colunas e da coluna seis até a última):
+```
+thiago@thiago-pc:~/labs/extraindo_conteudos$ tail -n 5 logs | cut -d " " -f-3,6-
+Apr 21 18:42:31 dm-0: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/dm-0' failed with exit code 1.
+Apr 21 18:42:31 sda3: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/sda3' failed with exit code 1.
+Apr 21 18:42:31 Created slice Slice /system/lvm2-pvscan.
+Apr 21 18:42:31 Starting LVM event activation on device 8:3...
+Apr 21 18:42:31 sr0: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/sr0' failed with exit code 1.
+```
+
+Compare com o conteúdo original (ele contém o nome da máquina e o programa que gerou o log):
+```
+thiago@thiago-pc:~/labs/extraindo_conteudos$ tail -n 5 logs
+Apr 21 18:42:31 thiago-pc systemd-udevd[447]: dm-0: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/dm-0' failed with exit code 1.
+Apr 21 18:42:31 thiago-pc systemd-udevd[449]: sda3: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/sda3' failed with exit code 1.
+Apr 21 18:42:31 thiago-pc systemd[1]: Created slice Slice /system/lvm2-pvscan.
+Apr 21 18:42:31 thiago-pc systemd[1]: Starting LVM event activation on device 8:3...
+Apr 21 18:42:31 thiago-pc systemd-udevd[448]: sr0: Process '/usr/bin/unshare -m /usr/bin/snap auto-import --mount=/dev/sr0' failed with exit code 1.
+```
