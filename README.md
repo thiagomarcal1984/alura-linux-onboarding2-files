@@ -378,3 +378,53 @@ Lembrando que o valor que aparece em seguida ao parâmetro deve ser um inteiro c
 1. `+n` para maior ou igual a n;
 2. `-n` para menor ou igual a n;
 3. `n` para exatamente igual a n;
+
+# Redirecionando a saída padrão para um arquivo
+Exibindo todas as linhas contendo `ssh` no arquivo services (saída padrão para o console):
+```
+thiago@thiago-pc:~/labs$ cd redirecionamento/
+thiago@thiago-pc:~/labs/redirecionamento$ cp /etc/services .
+thiago@thiago-pc:~/labs/redirecionamento$ grep ssh services
+ssh             22/tcp                          # SSH Remote Login Protocol
+```
+
+Redirecionando a saída do programa `grep` para o arquivo `listagem.txt` com o operador `>`:
+```
+thiago@thiago-pc:~/labs/redirecionamento$ grep ssh services > listagem.txt
+thiago@thiago-pc:~/labs/redirecionamento$ tail listagem.txt
+ssh             22/tcp                          # SSH Remote Login Protocol
+```
+
+Se você repetir o comando, o arquivo listagem será sobrescrito (o operador `>` limpa o arquivo antes de gravar nele):
+```
+thiago@thiago-pc:~/labs/redirecionamento$ grep 3389 services > listagem.txt
+thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt
+ms-wbt-server   3389/tcp
+```
+Para evitar a sobrescrita, use o operador `>>` ao invés de `>`:
+```
+thiago@thiago-pc:~/labs/redirecionamento$ grep ssh services > listagem.txt
+thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt
+ssh             22/tcp                          # SSH Remote Login Protocol
+thiago@thiago-pc:~/labs/redirecionamento$ grep 3389 services >> listagem.txt
+thiago@thiago-pc:~/labs/redirecionamento$ cat listagem.txt
+ssh             22/tcp                          # SSH Remote Login Protocol
+ms-wbt-server   3389/tcp
+```
+
+O operador pipe (`|`) redireciona a saída para ***outro comando*** (e não para outro arquivo, como no caso dos operadores `>` e `>>`).
+
+Exemplo: buscando o usuário `thiago` nas 10 últimas linhas do arquivo `/etc/passwd`:
+```
+thiago@thiago-pc:~/labs/redirecionamento$ tail /etc/passwd | grep thiago
+thiago:x:1000:1000:Thiago:/home/thiago:/bin/bash
+```
+Com um bom conhecimento dos operadores, podemos escrever um comando complexo em uma única linha.
+
+Exemplo: buscando o usuário `thiago` nas 10 últimas linhas do arquivo `/etc/passwd` e jogando o resultado para o arquivo `listagem_usuarios.txt`:
+```
+thiago@thiago-pc:~/labs/redirecionamento$ tail /etc/passwd | grep thiago > listagem_usuarios.txt
+
+thiago@thiago-pc:~/labs/redirecionamento$ cat listagem_usuarios.txt
+thiago:x:1000:1000:Thiago:/home/thiago:/bin/bash
+```
