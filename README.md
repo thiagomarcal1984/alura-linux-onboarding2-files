@@ -732,3 +732,18 @@ Todo comando exibido no ano precedido de circunflexo (`^`) é executado pression
     * Use as setas para definir a seleção a partir do cursor;
     * Tecle `<` ou `>` para diminuir ou aumentar a identação do texto selecionado;
     * Tecle `=` para remover a identação do texto selecionado;
+
+# Avançando no vi
+* Para excluir (na verdade, recortar) conteúdo do arquivo de texto, tecle `dd` no modo de comando sobre a linha que deseja remover. Você pode colocar o número de linhas que deseja remover prefixando o número (ex.: `10dd` remove 10 linhas).
+* Para copiar (yank) conteúdo do arquivo de texto, tecle `yy` no modo de comando sobre a linha que deseja remover. Você pode colocar o número de linhas que deseja copiar prefixando o número (ex.: `10yy` copia 10 linhas).
+* Para colar um texto especifico abaixo do cursor, digite `p`;
+* Para colar um texto especifico acima do cursor, digite `P`;
+* Para ir a uma linha especifica, digite `:<numero_da_linha>`. Ex.: `:25`;
+* Para ir para a primeira linha, diget: `gg` (minúsculo);
+* Para ir para a última linha, diget: `G` (maiúsculo);
+* Para pesquisar alguma string, user `/` seguida da string pesquisada. Ex.: `/ssh`
+
+## Substituindo strings no vi
+* Para substituir a `primeira ocorrência` de um texto `na mesma linha do cursor`, use o comando `:s/string_pesquisada/string_substituta`. Ex.: `:s/ssh/SSH`;
+* Para substituir `todas as ocorrências` de um texto `na mesma linha do cursor`, acrescente `/g` ao comando anterior. Ex.: `:s/ssh/SSH/g`;
+* Para substituir `todas as ocorrências` de um texto `em todo o arquivo`, use o comando `:s/string_pesquisada/string_substituta/g`. Ex.: `:%s/ssh/SSH/g`.
