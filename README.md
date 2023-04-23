@@ -685,3 +685,50 @@ looter
 loot's
 mooted
 ```
+# Editores de texto nano e vi
+
+Copiando as 50 primeiras linhas do arquivo `/etc/services` para `edit1.txt`:
+```
+thiago@thiago-pc:~/labs/editores$ head -n 50 /etc/services > edit1.txt
+thiago@thiago-pc:~/labs/editores$ ls
+edit1.txt
+thiago@thiago-pc:~/labs/editores$ wc edit1.txt
+  50  235 1611 edit1.txt
+```
+
+## Usando o editor nano
+Todo comando exibido no ano precedido de circunflexo (`^`) é executado pressionando `Ctrl`. Todo comando precedido de `M-` é executado pressionando `Alt`. Alguns comandos da tela principal são:
+* `^G` (?): Mostra a ajuda do nano;
+* `^O` (write Out): Salva o arquivo e continua editando;
+* `^W` (Where is): pesquisa algum texto;
+    * `^G` (?): Mostra a ajuda do comando Where Is;
+    * `M-C` (Case sensitive): liga ou desliga o case sensitive;
+    * `M-B` (Backwards): liga ou desliga a busca em sentido contrário;
+    * `M-R` (Regular expressions): liga ou desliga a busca com expressões regulares;
+    * `^P` (?): Mostra os critérios de busca mais antigos;
+    * `^N` (Newer): Mostra os critérios de busca mais recentes;
+    * `^R` (Replace): liga ou desliga a substituição de texto;
+    * `^C` (Cancel): sai do comando Where Is.
+* `^C` (loCation): mostra a posição do cursor (linha, coluna e total de caracteres); 
+* `^K` (Kut): recorta o texto para o buffer de transferência; 
+* `^U` (?): cola o texto do buffer de transferência; 
+* `^X` (eXit): sai do nano.
+
+## Usando o editor vi
+* Ao pressionar a tecla `ESC` entramos no modo de linha de comando.
+    * Para substituir um caracter e continuar no modo de linha de comando, tecle `r` (replace) e digite o caracter substituto;
+    * Para excluir um caracter e continuar no modo de linha de comando, tecle `x` (eXclude);
+    * As teclas `w` e `b` pulam uma palavra (pra frente e pra trás, respectivamente);
+    * Para desfazer uma inserção/edição, tecle `u` (undo);
+    * Para refazer uma inserção/edição, tecle `Ctrl + r` (redo);
+    * Para repetir o número de vezes que os comandos acima são executados, pressione o número de vezes e em seguida o comando (ex.: para desfazer 3 vezes, digite `3` e `u`).
+* Ao pressionarmos a tecla `i` na linha de comando, entramos no modo de inserção de texto.
+    * `i` entra no modo inserção no cursor atual;
+    * `a` entra no modo inserção um caracter depois do cursor atual;
+    * `I` entra no modo inserção no início da linha onde está o cursor;
+    * `A` entra no modo inserção no fim da linha onde está o cursor;
+    * `C` (maiúsculo) entra no modo inserção apagando todo o resto da linha a partir da posição atual do cursor.
+* Ao pressionarmos a tecla `v` na linha de comando, entramos no modo visual (ele permite seleção de texto, o que facilita a remoção de conteúdo, por exemplo).
+    * Use as setas para definir a seleção a partir do cursor;
+    * Tecle `<` ou `>` para diminuir ou aumentar a identação do texto selecionado;
+    * Tecle `=` para remover a identação do texto selecionado;
